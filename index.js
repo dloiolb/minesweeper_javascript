@@ -8,10 +8,8 @@ button.addEventListener("click", function() {
     console.log("A\nB\n");
     game = 1;
     win = 0;
-    startGame();
+    startGame2();
 });
-
-createBoard();
 
 // Cell class
 class Cell {
@@ -22,6 +20,13 @@ class Cell {
     }
 }
 
+// Initialize the game variables
+const DIFFICULTY = 99;
+let game = 1;
+let win = 0;
+let firstpress = true;
+let board = Array(16).fill().map(() => Array(30).fill().map(() => new Cell()));
+
 // Generate the game board and add buttons
 function createBoard() {
     gameBoardContainer.innerHTML = '';
@@ -29,17 +34,75 @@ function createBoard() {
         for (let col = 0; col < 30; col++) {
             const button = document.createElement('button');
             button.setAttribute('id', `button-${row}-${col}`);
+            button.textContent = `${row+1}.${col+1}`;
             button.addEventListener('click', () => handleClick(row, col));
+            button.addEventListener('contextmenu', (event) => {
+                event.preventDefault();
+                handleRightClick(row, col)
+        });
             gameBoardContainer.appendChild(button);
         }
     }
 }
 
-// Initialize the game variables
-const DIFFICULTY = 99;
-let game = 1;
-let win = 0;
-let board = Array(16).fill().map(() => Array(30).fill().map(() => new Cell()));
+// Handle click on a button
+function handleClick(row, col) {
+    if (firstpress) {
+
+        // let roww = prompt("Input row (from 1-16): ");
+        // let coll = prompt("Input column (from 1-30): ");
+        generateBoard(row+1, col+1);
+
+        markNumb();
+        display();
+        firstpress = false;
+    }
+
+    if (!game || board[row][col].hasbeenpressed) return;
+
+    const button = document.getElementById(`button-${row}-${col}`);
+    board[row][col].hasbeenpressed = true;
+    changePress(row+1, col+1, 'e');
+    display();
+    
+    if (board[row][col].behind === 1) {
+        button.textContent = 'B';  // Show Bomb
+        button.style.backgroundColor = 'red';
+        game = 0;
+        display();
+        // alert("Game Over! You hit a bomb!");
+    } else {
+        button.textContent = board[row][col].numberofbombs === 0 ? '' : board[row][col].numberofbombs;
+        // button.style.backgroundColor = '#5c5e5c';  // Light gay
+    }
+}
+
+function handleRightClick(row, col) {
+    if (!game || board[row][col].hasbeenpressed === 1) return;
+    if (!game || board[row][col].hasbeenpressed === 2){
+        const button = document.getElementById(`button-${row}-${col}`);
+        // board[row][col].hasbeenpressed = 2;
+        changePress(row+1, col+1, '0');
+        display();
+    }
+    else{
+        const button = document.getElementById(`button-${row}-${col}`);
+        // board[row][col].hasbeenpressed = 2;
+        changePress(row+1, col+1, '!');
+        display();
+    }
+    
+    // if (board[row][col].behind === 1) {
+    //     button.textContent = 'B';  // Show Bomb
+    //     button.style.backgroundColor = 'red';
+    //     game = 0;
+    //     display();
+    //     alert("Game Over! You hit a bomb!");
+    // } else {
+    //     button.textContent = board[row][col].numberofbombs === 0 ? '' : board[row][col].numberofbombs;
+    //     button.style.backgroundColor = '#5c5e5c';  // Light gay
+    // }
+}
 
 // Function to generate the board with bombs
 function generateBoard(r, c) {
@@ -110,6 +173,34 @@ function markNumb() {
     connectedZero();
 }
 
+const BOMB = "rgb(244, 10, 10)";   // Red color for bombs
+const RESET = "rgb(255, 255, 255)";   // Reset color to default
+const BOLDYELLOW = "rgb(210, 218, 90)"; // Bold yellow
+const BLUE = "rgb(54, 35, 196)";   // Blue color
+const GREEN = "rgb(139, 213, 144)";  // Green color
+const RED = "rgb(196, 35, 35)";    // Light red color
+const PURPLE = "rgb(159, 35, 196)"; // Purple color
+const YELLOW = "rgb(223, 217, 103)"; // Yellow color
+const TURQ = "rgb(35, 193, 196)";   // Turquoise (light blue)
+const SEVEN = "rgb(164, 155, 172)";  // Light gray
+const EIGHT = "rgb(105, 92, 92)";  // Dark gray
+
+function which_color(x)
+{
+	switch (x) {
+	case 0: return BOLDYELLOW;
+	case 1: return BLUE;
+	case 2: return GREEN;
+	case 3: return RED;
+	case 4: return PURPLE;
+	case 5: return YELLOW;
+	case 6: return TURQ;
+	case 7: return SEVEN;
+	case 8: return EIGHT;
+    default: return RESET; // Optional default return in case no match
+	}
+}
+
 // Function to display the game board
 function display() {
     let numppp = 1;
@@ -119,14 +210,31 @@ function display() {
         if (numppp < 10) output += " ";
         numppp++;
         for (let col = 0; col < 30; col++) {
+            const button = document.getElementById(`button-${row}-${col}`);
+
             if (game === 0 && board[row][col].behind === 1)
                 board[row][col].hasbeenpressed = 1;
 
             if (board[row][col].hasbeenpressed === 1) {
-                if (board[row][col].numberofbombs === 9) output += "*  ";
-                else output += board[row][col].numberofbombs + "  ";
-            } else {
+                if (board[row][col].numberofbombs === 9) {
+                    output += "*  ";
+                    button.textContent = '*';
+                    button.style.color = RED;
+                }
+                else {
+                    output += board[row][col].numberofbombs + "  ";
+                    button.textContent = `${board[row][col].numberofbombs}`;
+                    button.style.color = which_color(board[row][col].numberofbombs);
+                    button.style.backgroundColor = '#8b908b';  // Light gay
+                }
+            } 
+            else if (board[row][col].hasbeenpressed === 2) {
+                output += "!  ";  // Represent unpressed cell
+                button.textContent = `!`;
+            } 
+            else {
                 output += "O  ";  // Represent unpressed cell
+                button.textContent = ` `;
             }
         }
         output += "\n";
@@ -143,6 +251,7 @@ function changePress(raww, caww, decision) {
     if (decision === 'e') hbp = 1;
     else if (decision === '!') hbp = 2;
     else if (decision === '?') hbp = 3;
+    else if (decision === '0') hbp = 0;
     else console.log("That is not a valid mark.\n");
 
     board[raww][caww].hasbeenpressed = hbp;
@@ -187,8 +296,39 @@ function startGame() {
     } else {
         console.log("\nYOU LOST");
     }
+
 }
 
 // Call the start game function
 // startGame();
+function startGame2() {
+    
+    // const DIFFICULTY = 99;
+    game = 1;
+    win = 0;
+    firstpress = true;
+    board = Array(16).fill().map(() => Array(30).fill().map(() => new Cell()));
+    createBoard();
+    display();
 
+    // console.log("MINESWEEPER");
+    // display();
+
+    // while (game === 1) {
+    //     let rroww = prompt("Input row (from 1-16): ");
+    //     let ccoll = prompt("Input column (from 1-30): ");
+    //     let ddecc = prompt("What to do with this location?  enter: \n'e' - press this location\n'!' - mark this as bomb\n'?' - mark this as unknown\n");
+
+    //     changePress(rroww, ccoll, ddecc);
+    //     display();
+    // }
+
+    // if (win === 1) {
+    //     console.log("\nCONGRATULATIONS! YOU WON MINESWEEPER!");
+    // } else {
+    //     console.log("\nYOU LOST");
+    // }
+
+}
+
+startGame2();

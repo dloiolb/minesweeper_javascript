@@ -1,8 +1,9 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
@@ -12,19 +13,30 @@ body {
     text-align: center;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
+#myButton {
+    padding: 5px 5px;
+    font-size: 20px;
     cursor: pointer;
     border: none;
-    background-color: #4CAF50;
+    background-color: #8b908b;
     color: white;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 
-button:hover {
-    background-color: #45a049;
+button {
+    /* padding: 5px 5px; */
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    background-color: #b7bab7;
+    color: white;
+    /* border-radius: 5px; */
 }
+
+/* button:hover {
+    background-color: #4d584e;
+} */
 
 p {
     margin-top: 20px;
