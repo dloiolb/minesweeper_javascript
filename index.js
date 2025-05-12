@@ -36,7 +36,8 @@ function createBoard() {
             const button = document.createElement('button');
             button.setAttribute('id', `button-${row}-${col}`);
             button.textContent = `${row+1}.${col+1}`;
-            button.addEventListener('click', () => handleClick(row, col));
+            button.addEventListener('touchstart', () => handleClick(row, col));
+            button.addEventListener('mousedown', () => handleClick(row, col));
             button.addEventListener('contextmenu', (event) => {
                 event.preventDefault();
                 handleRightClick(row, col)

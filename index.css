@@ -6,7 +6,7 @@ body {
     flex-direction: column;
     height: 100vh;
     margin: 0;
-    background-color: #4a4747;
+    background-color: #4c4c4c;
 }
 
 .container {
@@ -20,18 +20,34 @@ body {
     border: none;
     background-color: #8b908b;
     color: white;
+    border-top: 2px solid #e6ebe6;    /* Top border */
+    border-left: 2px solid #e6ebe6;  /* Left border */
+    border-bottom: 2px solid #7f7f7f;   /* No border at the bottom */
+    border-right: 2px solid #7f7f7f;    /* No border at the right */
     /* border-radius: 5px; */
     margin-bottom: 20px;
+}
+
+#myButton:active {
+    background-color: #727472;
+    color: white;
+    border-top: 2px solid #e6ebe6;    /* Top border */
+    border-left: 2px solid #e6ebe6;  /* Left border */
+    border-bottom: 2px solid #7f7f7f;   /* No border at the bottom */
+    border-right: 2px solid #7f7f7f;    /* No border at the right */
 }
 
 button {
     /* padding: 5px 5px; */
     font-size: 15px;
     cursor: pointer;
-    border: none;
     background-color: #b7bab7;
     color: white;
-    /* border-radius: 5px; */
+    border-top: 2px solid #e6ebe6;    /* Top border */
+    border-left: 2px solid #e6ebe6;  /* Left border */
+    border-bottom: 2px solid #7f7f7f;   /* No border at the bottom */
+    border-right: 2px solid #7f7f7f;    /* No border at the right */
+    /*border-radius: 5px;  /* Optional, for rounded corners */
 }
 
 /* button:hover {
