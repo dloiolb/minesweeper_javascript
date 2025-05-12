@@ -18,23 +18,23 @@ body {
     font-size: 20px;
     cursor: pointer;
     border: none;
-    background-color: #8b908b;
+    background-color: #b7bab7;
     color: white;
-    border-top: 2px solid #e6ebe6;    /* Top border */
-    border-left: 2px solid #e6ebe6;  /* Left border */
-    border-bottom: 2px solid #7f7f7f;   /* No border at the bottom */
-    border-right: 2px solid #7f7f7f;    /* No border at the right */
+    border-top: 2px solid #e6ebe6;    
+    border-left: 2px solid #e6ebe6; 
+    border-bottom: 2px solid #7f7f7f;   
+    border-right: 2px solid #7f7f7f; 
     /* border-radius: 5px; */
     margin-bottom: 20px;
 }
 
 #myButton:active {
-    background-color: #727472;
+    background-color: #a0a0a0;
     color: white;
-    border-top: 2px solid #e6ebe6;    /* Top border */
-    border-left: 2px solid #e6ebe6;  /* Left border */
-    border-bottom: 2px solid #7f7f7f;   /* No border at the bottom */
-    border-right: 2px solid #7f7f7f;    /* No border at the right */
+    border-top: 2px solid #6b6b6b;   
+    border-left: 2px solid #6b6b6b; 
+    border-bottom: 2px solid #c1c1c1;  
+    border-right: 2px solid #c1c1c1;   
 }
 
 button {
@@ -43,16 +43,20 @@ button {
     cursor: pointer;
     background-color: #b7bab7;
     color: white;
-    border-top: 2px solid #e6ebe6;    /* Top border */
-    border-left: 2px solid #e6ebe6;  /* Left border */
-    border-bottom: 2px solid #7f7f7f;   /* No border at the bottom */
-    border-right: 2px solid #7f7f7f;    /* No border at the right */
-    /*border-radius: 5px;  /* Optional, for rounded corners */
+    border-top: 2px solid #e6ebe6;    
+    border-left: 2px solid #e6ebe6; 
+    border-bottom: 2px solid #7f7f7f;   
+    border-right: 2px solid #7f7f7f;  
+    /*border-radius: 5px; */
 }
 
 /* button:hover {
     background-color: #4d584e;
 } */
+
+button:hover {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, .5); /* Shadow */
+}
 
 p {
     margin-top: 20px;
@@ -64,5 +68,5 @@ p {
     display: grid;
     grid-template-columns: repeat(30, 30px);
     grid-template-rows: repeat(16, 30px);
-    gap: 2px;
+    gap: 0px;
 }

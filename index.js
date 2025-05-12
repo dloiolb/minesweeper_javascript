@@ -36,12 +36,20 @@ function createBoard() {
             const button = document.createElement('button');
             button.setAttribute('id', `button-${row}-${col}`);
             button.textContent = `${row+1}.${col+1}`;
-            button.addEventListener('touchstart', () => handleClick(row, col));
-            button.addEventListener('mousedown', () => handleClick(row, col));
+
+            button.addEventListener('click', () => handleClick(row, col));
+
             button.addEventListener('contextmenu', (event) => {
                 event.preventDefault();
                 handleRightClick(row, col)
-        });
+            });
+
+            // button.addEventListener('mouseover', (event) => {
+            //     if (game){
+            //         button.style.boxShadow = '5px 5px 15px rgba(0, 0, 0, 0.5)';  //shadow on hover
+            //     }
+            // });
+
             gameBoardContainer.appendChild(button);
         }
     }
@@ -204,7 +212,13 @@ function changePress(raww, caww, decision) {
 
     if (board[raww][caww].behind === 1 && board[raww][caww].hasbeenpressed === 1) {
         const button = document.getElementById(`button-${raww}-${caww}`);
-        button.style.backgroundColor = "rgb(248, 108, 108)";  // Light gay
+        button.style.backgroundColor = '#d9534f'; 
+        button.style.borderTop = '2px solid #9e3d32';
+        button.style.borderLeft = '2px solid #9e3d32';
+        button.style.borderBottom = '2px solid #f5b0a6';
+        button.style.borderRight = '2px solid #f5b0a6';  
+        button.style.boxShadow = 'inset 4px 4px 8px rgba(0, 0, 0, 0.3)';
+        button.style.cursor = 'pointer';
         console.log("\n\n");
         game = 0;
     }
@@ -236,7 +250,15 @@ function display() {
                     output += board[row][col].numberofbombs + "  ";
                     button.textContent = `${board[row][col].numberofbombs}`;
                     button.style.color = which_color(board[row][col].numberofbombs);
-                    button.style.backgroundColor = '#8b908b';  // Light gay
+                    // button.style.backgroundColor = '#8b908b';  // Light gray
+
+                    button.style.backgroundColor = '#a0a0a0';  // Darker background color
+                    button.style.borderTop = '2px solid #6b6b6b';  
+                    button.style.borderLeft = '2px solid #6b6b6b';  
+                    button.style.borderBottom = '2px solid #c1c1c1'; 
+                    button.style.borderRight = '2px solid #c1c1c1'; 
+                    button.style.boxShadow = 'inset 4px 4px 8px rgba(0, 0, 0, 0.3)';
+                    button.style.cursor = 'pointer';
                 }
             } 
             else if (board[row][col].hasbeenpressed === 2) {
