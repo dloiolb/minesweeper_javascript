@@ -13,6 +13,27 @@ const EIGHT = "rgb(105, 92, 92)";  // Dark gray
 // Initialize the game variables
 const DIFFICULTY = 99;
 
+const BEGINNER_BOMBS = 10;
+const BEGINNER_ROWS	= 8;
+const BEGINNER_COLUMNS = 8;
+
+const INTERMEDIATE_BOMBS = 40;
+const INTERMEDIATE_ROWS = 16;
+const INTERMEDIATE_COLUMNS = 16;
+
+const EXPERT_BOMBS = 99;
+const EXPERT_ROWS = 16;
+const EXPERT_COLUMNS = 30;
+
+// let CHOSEN_DIFF_BOMBS = EXPERT_BOMBS;
+// let CHOSEN_DIFF_ROWS = EXPERT_ROWS;
+// let CHOSEN_DIFF_COLS = EXPERT_COLUMNS;
+
+let CHOSEN_DIFF_BOMBS = EXPERT_BOMBS;
+let CHOSEN_DIFF_ROWS = EXPERT_ROWS;
+let CHOSEN_DIFF_COLS = EXPERT_COLUMNS;
+
+
 let game = 1; //while game === 1, keep playing, game === 0 is game over (win or lose)
 let win = 0; // game === 0 and win === 0 means lose, game === 0 and win === 1 means win
 let firstpress = true;
@@ -26,13 +47,20 @@ class Cell {
     }
 }
 
-let board = Array(16).fill().map(() => Array(30).fill().map(() => new Cell()));
+// let board1 = Array(8).fill().map(() => Array(8).fill().map(() => new Cell()));
+// let board2 = Array(16).fill().map(() => Array(16).fill().map(() => new Cell()));
+let board = Array(CHOSEN_DIFF_ROWS).fill().map(() => Array(CHOSEN_DIFF_COLS).fill().map(() => new Cell()));
 
 // Create the game board and add buttons
 function createBoard() {
-    gameBoardContainer.innerHTML = '';
-    for (let row = 0; row < 16; row++) {
-        for (let col = 0; col < 30; col++) {
+    let container;
+    if(CHOSEN_DIFF_BOMBS === BEGINNER_BOMBS){container = gameBoardContainerBeg;}
+    if(CHOSEN_DIFF_BOMBS === INTERMEDIATE_BOMBS){container = gameBoardContainerInt;}
+    if(CHOSEN_DIFF_BOMBS === EXPERT_BOMBS){container = gameBoardContainerExp;}
+
+    container.innerHTML = '';
+    for (let row = 0; row < CHOSEN_DIFF_ROWS; row++) {
+        for (let col = 0; col < CHOSEN_DIFF_COLS; col++) {
             const button = document.createElement('button');
             button.setAttribute('id', `button-${row}-${col}`);
             button.textContent = `${row+1}.${col+1}`;
@@ -50,7 +78,7 @@ function createBoard() {
             //     }
             // });
 
-            gameBoardContainer.appendChild(button);
+            container.appendChild(button);
         }
     }
 }
@@ -62,13 +90,13 @@ takes in account player's initial touch of some location a,b, so board[a][b].beh
 function generateBoard(r, c) {
     board[r - 1][c - 1].hasbeenpressed = 1;
 
-    for (let counter = 0; counter < DIFFICULTY; counter++) {
+    for (let counter = 0; counter < CHOSEN_DIFF_BOMBS; counter++) {
         let randrow, randcol;
 
         // Generate random positions for bombs, ensuring it's not the first clicked position
         do {
-            randrow = Math.floor(Math.random() * 16);
-            randcol = Math.floor(Math.random() * 30);
+            randrow = Math.floor(Math.random() * CHOSEN_DIFF_ROWS);
+            randcol = Math.floor(Math.random() * CHOSEN_DIFF_COLS);
         } while (board[randrow][randcol].behind === 1 || (randrow === (r - 1) && randcol === (c - 1)));
 
         board[randrow][randcol].behind = 1;
@@ -76,16 +104,72 @@ function generateBoard(r, c) {
 }
 
 // Get the button element by its ID
+const ButtonBeg = document.getElementById("ButtonBeg");
+const ButtonInt = document.getElementById("ButtonInt");
+const ButtonExp = document.getElementById("ButtonExp");
 const startButton = document.getElementById("myButton");
-const gameBoardContainer = document.getElementById("game-board");
+// const gameBoardContainer = document.getElementById("game-board");
+const gameBoardContainerBeg = document.getElementById("game-board-beginner");
+const gameBoardContainerInt = document.getElementById("game-board-intermediate");
+const gameBoardContainerExp = document.getElementById("game-board-expert");
+
+document.getElementById("ButtonBeg").classList.add("disabled-button");
+document.getElementById("ButtonInt").classList.add("disabled-button");
+
+
+// function showBoard(level) {
+//   document.querySelectorAll('.game-board').forEach(board => {
+//     board.style.visibility = 'hidden';
+//   });
+//   document.getElementById(`game-board-${level}`).style.visibility = 'visible';
+// }
+
+function showBoard(level) {
+  document.querySelectorAll('.game-board').forEach(board => {
+    board.classList.remove('active');
+  });
+  document.getElementById(`game-board-${level}`).classList.add('active');
+}
+
+showBoard("expert");
+
+// ButtonBeg.addEventListener("click", function() {
+//     CHOSEN_DIFF_BOMBS = BEGINNER_BOMBS;
+//     CHOSEN_DIFF_ROWS = BEGINNER_ROWS;
+//     CHOSEN_DIFF_COLS = BEGINNER_COLUMNS;
+//     showBoard("beginner");
+//     // game = 1;
+//     // win = 0;
+//     startGame2();
+// });
+
+// ButtonInt.addEventListener("click", function() {
+//     CHOSEN_DIFF_BOMBS = INTERMEDIATE_BOMBS;
+//     CHOSEN_DIFF_ROWS = INTERMEDIATE_ROWS;
+//     CHOSEN_DIFF_COLS = INTERMEDIATE_COLUMNS;
+//     showBoard("intermediate");
+//     // game = 1;
+//     // win = 0;
+//     startGame2();
+// });
+
+ButtonExp.addEventListener("click", function() {
+    CHOSEN_DIFF_BOMBS = EXPERT_BOMBS;
+    CHOSEN_DIFF_ROWS = EXPERT_ROWS;
+    CHOSEN_DIFF_COLS = EXPERT_COLUMNS;
+    showBoard("expert");
+    // game = 1;
+    // win = 0;
+    startGame2();
+});
 
 // Add a click event listener to the button
 startButton.addEventListener("click", function() {
     // Print a message to the console when the button is clicked
-    console.log("Game Start\n");
-    game = 1;
-    win = 0;
-    startGame2();
+    // console.log("Game Start\n");
+    // game = 1;
+    // win = 0;
+    // startGame2();
 });
 
 // Handle click on a button
@@ -133,9 +217,9 @@ function edge(a, b) {
     let ans = [0, 0, 0, 0];
 
     ans[0] = (a > 0) ? (a - 1) : a;
-    ans[1] = (a < 15) ? (a + 2) : (a + 1);
+    ans[1] = (a < CHOSEN_DIFF_ROWS-1) ? (a + 2) : (a + 1);
     ans[2] = (b > 0) ? (b - 1) : b;
-    ans[3] = (b < 29) ? (b + 2) : (b + 1);
+    ans[3] = (b < CHOSEN_DIFF_COLS-1) ? (b + 2) : (b + 1);
 
     return ans;
 }
@@ -144,8 +228,8 @@ function edge(a, b) {
 function connectedZero() {
     let yor = 0;
     do {
-        for (let a = 0; a < 16; a++) {
-            for (let b = 0; b < 30; b++) {
+        for (let a = 0; a < CHOSEN_DIFF_ROWS; a++) {
+            for (let b = 0; b < CHOSEN_DIFF_COLS; b++) {
                 if (board[a][b].numberofbombs === 0 && board[a][b].hasbeenpressed === 1) {
                     for (let ex = edge(a, b)[0]; ex < edge(a, b)[1]; ex++) {
                         for (let ey = edge(a, b)[2]; ey < edge(a, b)[3]; ey++) {
@@ -162,8 +246,8 @@ function connectedZero() {
 
 // Function to mark the numbers around bombs
 function markNumb() {
-    for (let a = 0; a < 16; a++) {
-        for (let b = 0; b < 30; b++) {
+    for (let a = 0; a < CHOSEN_DIFF_ROWS; a++) {
+        for (let b = 0; b < CHOSEN_DIFF_COLS; b++) {
             if (board[a][b].behind === 0) {
                 let howmanybombs = 0;
                 for (let ex = edge(a, b)[0]; ex < edge(a, b)[1]; ex++) {
@@ -230,11 +314,11 @@ function changePress(raww, caww, decision) {
 function display() {
     let numppp = 1;
     let output = "   1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30\n";
-    for (let row = 0; row < 16; row++) {
+    for (let row = 0; row < CHOSEN_DIFF_ROWS; row++) {
         output += numppp + " ";
         if (numppp < 10) output += " ";
         numppp++;
-        for (let col = 0; col < 30; col++) {
+        for (let col = 0; col < CHOSEN_DIFF_COLS; col++) {
             const button = document.getElementById(`button-${row}-${col}`);
 
             if (game === 0 && board[row][col].behind === 1)
@@ -276,46 +360,47 @@ function display() {
 }
 
 // Function to start the game on console
-function startGame() {
+// function startGame() {
     
-    // const DIFFICULTY = 99;
-    game = 1;
-    win = 0;
-    board = Array(16).fill().map(() => Array(30).fill().map(() => new Cell()));
+//     // const DIFFICULTY = 99;
+//     game = 1;
+//     win = 0;
+//     board = Array(16).fill().map(() => Array(30).fill().map(() => new Cell()));
 
-    console.log("MINESWEEPER");
-    display();
+//     console.log("MINESWEEPER");
+//     display();
 
-    let roww = prompt("Input row (from 1-16): ");
-    let coll = prompt("Input column (from 1-30): ");
-    generateBoard(roww, coll);
+//     let roww = prompt("Input row (from 1-16): ");
+//     let coll = prompt("Input column (from 1-30): ");
+//     generateBoard(roww, coll);
 
-    markNumb();
-    display();
+//     markNumb();
+//     display();
 
-    while (game === 1) {
-        let rroww = prompt("Input row (from 1-16): ");
-        let ccoll = prompt("Input column (from 1-30): ");
-        let ddecc = prompt("What to do with this location?  enter: \n'e' - press this location\n'!' - mark this as bomb\n'?' - mark this as unknown\n");
+//     while (game === 1) {
+//         let rroww = prompt("Input row (from 1-16): ");
+//         let ccoll = prompt("Input column (from 1-30): ");
+//         let ddecc = prompt("What to do with this location?  enter: \n'e' - press this location\n'!' - mark this as bomb\n'?' - mark this as unknown\n");
 
-        changePress(rroww, ccoll, ddecc);
-        display();
-    }
+//         changePress(rroww, ccoll, ddecc);
+//         display();
+//     }
 
-    if (win === 1) {
-        console.log("\nCONGRATULATIONS! YOU WON MINESWEEPER!");
-    } else {
-        console.log("\nYOU LOST");
-    }
+//     if (win === 1) {
+//         console.log("\nCONGRATULATIONS! YOU WON MINESWEEPER!");
+//     } else {
+//         console.log("\nYOU LOST");
+//     }
 
-}
+// }
 
 function startGame2() {
     // const DIFFICULTY = 99;
     game = 1;
     win = 0;
     firstpress = true;
-    board = Array(16).fill().map(() => Array(30).fill().map(() => new Cell()));
+    startButton.textContent = CHOSEN_DIFF_BOMBS;
+    board = Array(EXPERT_ROWS).fill().map(() => Array(EXPERT_COLUMNS).fill().map(() => new Cell()));
     createBoard();
     display();
 }

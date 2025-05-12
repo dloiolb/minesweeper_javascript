@@ -1,4 +1,4 @@
-body {
+html, body {
     font-family: 'Times New Roman', Times, serif, sans-serif;
     display: flex;
     justify-content: center;
@@ -10,7 +10,9 @@ body {
 }
 
 .container {
+    /* align-self: flex-end; */
     text-align: center;
+    background-color: rgb(14, 13, 13);
 }
 
 #myButton {
@@ -26,9 +28,96 @@ body {
     border-right: 2px solid #7f7f7f; 
     /* border-radius: 5px; */
     margin-bottom: 20px;
+
+    background-color: #575757;
+    border-top: 2px solid #313131;
+    border-left: 2px solid #313131;
+    border-bottom: 2px solid #e7e0df;
+    border-right: 2px solid #e7e0df;
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
 }
 
-#myButton:active {
+/* #myButton:active {
+    background-color: #a0a0a0;
+    color: white;
+    border-top: 2px solid #6b6b6b;   
+    border-left: 2px solid #6b6b6b; 
+    border-bottom: 2px solid #c1c1c1;  
+    border-right: 2px solid #c1c1c1;   
+} */
+
+.button-row {
+    margin-top: 70px;
+    display: flex;
+    text-align: center;
+    /* justify-content: flex-start; */
+    /* gap: 10px; */
+}
+
+.button-row button:nth-child(4) {
+  margin-left: 140px; 
+}
+
+.disabled-button {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    border-top: 2px solid #eeeeee;
+    border-left: 2px solid #eeeeee;
+    border-bottom: 2px solid #999999;
+    border-right: 2px solid #999999;
+    cursor: default !important;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+
+#ButtonBeg {
+    padding: 5px 5px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: green;
+    color: white;
+    border-top: 2px solid #e6ebe6;    
+    border-left: 2px solid #e6ebe6; 
+    border-bottom: 2px solid #7f7f7f;   
+    border-right: 2px solid #7f7f7f; 
+    /* border-radius: 5px; */
+    margin-bottom: 20px;
+}
+#ButtonInt {
+    padding: 5px 5px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: orange;
+    color: white;
+    border-top: 2px solid #e6ebe6;    
+    border-left: 2px solid #e6ebe6; 
+    border-bottom: 2px solid #7f7f7f;   
+    border-right: 2px solid #7f7f7f; 
+    /* border-radius: 5px; */
+    margin-bottom: 20px;
+}
+#ButtonExp {
+    padding: 5px 5px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: red;
+    color: white;
+    border-top: 2px solid #e6ebe6;    
+    border-left: 2px solid #e6ebe6; 
+    border-bottom: 2px solid #7f7f7f;   
+    border-right: 2px solid #7f7f7f; 
+    /* border-radius: 5px; */
+    margin-bottom: 20px;
+}
+
+/* #ButtonBeg:active, */
+/* #ButtonInt:active, */
+#ButtonExp:active {
     background-color: #a0a0a0;
     color: white;
     border-top: 2px solid #6b6b6b;   
@@ -64,9 +153,52 @@ p {
     color: #333;
 }
 
-#game-board {
-    display: grid;
+#game-board-container {
+  position: relative;
+  display: flex;
+  width: 900px; 
+  height: 500px;
+  justify-content: center;
+  align-items: center;
+
+  display: grid;
+  /* place-items: center; */ 
+  /* background-color: white; */
+}
+
+.game-board {
+    position: absolute;
+    top: 0;
+    display: grid;    
+}
+
+.game-board.active {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+#game-board-beginner, 
+#game-board-intermediate, 
+#game-board-expert {
+    grid-column: 4;
+  /* grid-row: 1; */
+}
+
+#game-board-beginner {
+    /* position:absolute; */
+    grid-template-columns: repeat(8, 30px);
+    grid-template-rows: repeat(8, 30px);
+}
+
+#game-board-intermediate {
+    /* position:absolute; */
+    grid-template-columns: repeat(16, 30px);
+    grid-template-rows: repeat(16, 30px);
+}
+
+#game-board-expert {
+    /* position:absolute; */
     grid-template-columns: repeat(30, 30px);
     grid-template-rows: repeat(16, 30px);
-    gap: 0px;
 }
+
