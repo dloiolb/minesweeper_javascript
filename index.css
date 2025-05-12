@@ -18,6 +18,7 @@ html, body {
 #myButton {
     padding: 5px 5px;
     font-size: 20px;
+    font-family: Georgia, serif;
     cursor: pointer;
     border: none;
     background-color: #b7bab7;
@@ -73,6 +74,7 @@ html, body {
 
 
 #ButtonBeg {
+    font-family: Georgia, serif;
     padding: 5px 5px;
     font-size: 20px;
     cursor: pointer;
@@ -87,6 +89,7 @@ html, body {
     margin-bottom: 20px;
 }
 #ButtonInt {
+    font-family: Georgia, serif;
     padding: 5px 5px;
     font-size: 20px;
     cursor: pointer;
@@ -101,6 +104,7 @@ html, body {
     margin-bottom: 20px;
 }
 #ButtonExp {
+    font-family: Georgia, serif;
     padding: 5px 5px;
     font-size: 20px;
     cursor: pointer;
@@ -128,6 +132,7 @@ html, body {
 
 button {
     /* padding: 5px 5px; */
+    font-family: Georgia, serif;
     font-size: 15px;
     cursor: pointer;
     background-color: #b7bab7;

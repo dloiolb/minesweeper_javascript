@@ -296,7 +296,7 @@ function changePress(raww, caww, decision) {
 
     if (board[raww][caww].behind === 1 && board[raww][caww].hasbeenpressed === 1) {
         const button = document.getElementById(`button-${raww}-${caww}`);
-        button.style.backgroundColor = '#d9534f'; 
+        button.style.backgroundColor = '#e40d0d'; 
         button.style.borderTop = '2px solid #9e3d32';
         button.style.borderLeft = '2px solid #9e3d32';
         button.style.borderBottom = '2px solid #f5b0a6';
@@ -327,7 +327,7 @@ function display() {
             if (board[row][col].hasbeenpressed === 1) {
                 if (board[row][col].numberofbombs === 9) {
                     output += "*  ";
-                    button.textContent = '*';
+                    button.textContent = "💣";
                     button.style.color = RED;
                 }
                 else {
