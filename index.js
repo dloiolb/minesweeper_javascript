@@ -29,14 +29,15 @@ const EXPERT_COLUMNS = 30;
 // let CHOSEN_DIFF_ROWS = EXPERT_ROWS;
 // let CHOSEN_DIFF_COLS = EXPERT_COLUMNS;
 
-let CHOSEN_DIFF_BOMBS = EXPERT_BOMBS;
-let CHOSEN_DIFF_ROWS = EXPERT_ROWS;
-let CHOSEN_DIFF_COLS = EXPERT_COLUMNS;
+let CHOSEN_DIFF_BOMBS = INTERMEDIATE_BOMBS;
+let CHOSEN_DIFF_ROWS = INTERMEDIATE_ROWS;
+let CHOSEN_DIFF_COLS = INTERMEDIATE_COLUMNS;
 
 
 let game = 1; //while game === 1, keep playing, game === 0 is game over (win or lose)
 let win = 0; // game === 0 and win === 0 means lose, game === 0 and win === 1 means win
 let firstpress = true;
+let losing_cell;
 
 // Cell class
 class Cell {
@@ -54,7 +55,8 @@ let board = Array(CHOSEN_DIFF_ROWS).fill().map(() => Array(CHOSEN_DIFF_COLS).fil
 // Create the game board and add buttons
 function createBoard() {
     let container;
-    if(CHOSEN_DIFF_BOMBS === BEGINNER_BOMBS){container = gameBoardContainerBeg;}
+    // let difficulty;
+    if(CHOSEN_DIFF_BOMBS === BEGINNER_BOMBS){container = gameBoardContainerBeg; }
     if(CHOSEN_DIFF_BOMBS === INTERMEDIATE_BOMBS){container = gameBoardContainerInt;}
     if(CHOSEN_DIFF_BOMBS === EXPERT_BOMBS){container = gameBoardContainerExp;}
 
@@ -62,7 +64,7 @@ function createBoard() {
     for (let row = 0; row < CHOSEN_DIFF_ROWS; row++) {
         for (let col = 0; col < CHOSEN_DIFF_COLS; col++) {
             const button = document.createElement('button');
-            button.setAttribute('id', `button-${row}-${col}`);
+            button.setAttribute('id', `${CHOSEN_DIFF_BOMBS}-button-${row}-${col}`);
             button.textContent = `${row+1}.${col+1}`;
 
             button.addEventListener('click', () => handleClick(row, col));
@@ -113,8 +115,8 @@ const gameBoardContainerBeg = document.getElementById("game-board-beginner");
 const gameBoardContainerInt = document.getElementById("game-board-intermediate");
 const gameBoardContainerExp = document.getElementById("game-board-expert");
 
-document.getElementById("ButtonBeg").classList.add("disabled-button");
-document.getElementById("ButtonInt").classList.add("disabled-button");
+// document.getElementById("ButtonBeg").classList.add("disabled-button");
+// document.getElementById("ButtonInt").classList.add("disabled-button");
 
 
 // function showBoard(level) {
@@ -124,48 +126,81 @@ document.getElementById("ButtonInt").classList.add("disabled-button");
 //   document.getElementById(`game-board-${level}`).style.visibility = 'visible';
 // }
 
+// function showBoard(level) {
+//   document.querySelectorAll('.game-board').forEach(board => {
+//     board.classList.remove('active');
+//   });
+//   document.getElementById(`game-board-${level}`).classList.add('active');
+// }
+
 function showBoard(level) {
-  document.querySelectorAll('.game-board').forEach(board => {
-    board.classList.remove('active');
-  });
-  document.getElementById(`game-board-${level}`).classList.add('active');
+    document.querySelectorAll('.game-board').forEach(board => {
+        board.style.display = 'none';
+    });
+    document.getElementById(`game-board-${level}`).style.display = 'grid';
 }
 
-showBoard("expert");
+function setActiveButton(level) {
+    const buttons = {
+        beginner: document.getElementById('ButtonBeg'),
+        intermediate: document.getElementById('ButtonInt'),
+        expert: document.getElementById('ButtonExp'),
+    };
 
-// ButtonBeg.addEventListener("click", function() {
-//     CHOSEN_DIFF_BOMBS = BEGINNER_BOMBS;
-//     CHOSEN_DIFF_ROWS = BEGINNER_ROWS;
-//     CHOSEN_DIFF_COLS = BEGINNER_COLUMNS;
-//     showBoard("beginner");
-//     // game = 1;
-//     // win = 0;
-//     startGame2();
-// });
+    // Reset all buttons to default gray
+    Object.values(buttons).forEach(btn => {
+        btn.classList.remove('button-active-beginner', 'button-active-intermediate', 'button-active-expert');
+    });
 
-// ButtonInt.addEventListener("click", function() {
-//     CHOSEN_DIFF_BOMBS = INTERMEDIATE_BOMBS;
-//     CHOSEN_DIFF_ROWS = INTERMEDIATE_ROWS;
-//     CHOSEN_DIFF_COLS = INTERMEDIATE_COLUMNS;
-//     showBoard("intermediate");
-//     // game = 1;
-//     // win = 0;
-//     startGame2();
-// });
+    // Add the appropriate active class
+    if (level === 'beginner') {
+        buttons.beginner.classList.add('button-active-beginner');
+    } else if (level === 'intermediate') {
+        buttons.intermediate.classList.add('button-active-intermediate');
+    } else if (level === 'expert') {
+        buttons.expert.classList.add('button-active-expert');
+    }
+}
+
+document.getElementById('ButtonBeg').onclick = () => setActiveButton('beginner');
+document.getElementById('ButtonInt').onclick = () => setActiveButton('intermediate');
+document.getElementById('ButtonExp').onclick = () => setActiveButton('expert');
+
+
+ButtonBeg.addEventListener("click", function() {
+    CHOSEN_DIFF_BOMBS = BEGINNER_BOMBS;
+    CHOSEN_DIFF_ROWS = BEGINNER_ROWS;
+    CHOSEN_DIFF_COLS = BEGINNER_COLUMNS;
+    showBoard("beginner");
+    setActiveButton("beginner");
+    // game = 1;
+    // win = 0;
+    startGame2();
+});
+
+ButtonInt.addEventListener("click", function() {
+    CHOSEN_DIFF_BOMBS = INTERMEDIATE_BOMBS;
+    CHOSEN_DIFF_ROWS = INTERMEDIATE_ROWS;
+    CHOSEN_DIFF_COLS = INTERMEDIATE_COLUMNS;
+    showBoard("intermediate");
+    setActiveButton("intermediate");
+    // game = 1;
+    // win = 0;
+    startGame2();
+});
 
 ButtonExp.addEventListener("click", function() {
     CHOSEN_DIFF_BOMBS = EXPERT_BOMBS;
     CHOSEN_DIFF_ROWS = EXPERT_ROWS;
     CHOSEN_DIFF_COLS = EXPERT_COLUMNS;
     showBoard("expert");
+    setActiveButton("expert");
     // game = 1;
     // win = 0;
     startGame2();
 });
 
-// Add a click event listener to the button
 startButton.addEventListener("click", function() {
-    // Print a message to the console when the button is clicked
     // console.log("Game Start\n");
     // game = 1;
     // win = 0;
@@ -187,7 +222,7 @@ function handleClick(row, col) {
 
     if (!game || board[row][col].hasbeenpressed) return;
 
-    const button = document.getElementById(`button-${row}-${col}`);
+    const button = document.getElementById(`${CHOSEN_DIFF_BOMBS}-button-${row}-${col}`);
     board[row][col].hasbeenpressed = true;
     changePress(row+1, col+1, 'e');
     display();
@@ -197,13 +232,13 @@ function handleClick(row, col) {
 function handleRightClick(row, col) {
     if (!game || board[row][col].hasbeenpressed === 1) return;
     if (!game || board[row][col].hasbeenpressed === 2){
-        const button = document.getElementById(`button-${row}-${col}`);
+        const button = document.getElementById(`${CHOSEN_DIFF_BOMBS}-button-${row}-${col}`);
         // board[row][col].hasbeenpressed = 2;
         changePress(row+1, col+1, '0');
         display();
     }
     else{
-        const button = document.getElementById(`button-${row}-${col}`);
+        const button = document.getElementById(`${CHOSEN_DIFF_BOMBS}-button-${row}-${col}`);
         // board[row][col].hasbeenpressed = 2;
         changePress(row+1, col+1, '!');
         display();
@@ -294,17 +329,20 @@ function changePress(raww, caww, decision) {
 
     board[raww][caww].hasbeenpressed = hbp;
 
+    // console.log(board[raww][caww].behind, board[raww][caww].hasbeenpressed)
     if (board[raww][caww].behind === 1 && board[raww][caww].hasbeenpressed === 1) {
-        const button = document.getElementById(`button-${raww}-${caww}`);
-        button.style.backgroundColor = '#e40d0d'; 
-        button.style.borderTop = '2px solid #9e3d32';
-        button.style.borderLeft = '2px solid #9e3d32';
-        button.style.borderBottom = '2px solid #f5b0a6';
-        button.style.borderRight = '2px solid #f5b0a6';  
-        button.style.boxShadow = 'inset 4px 4px 8px rgba(0, 0, 0, 0.3)';
-        button.style.cursor = 'pointer';
+        const button = document.getElementById(`${CHOSEN_DIFF_BOMBS}-button-${raww}-${caww}`);
+        // button.style.backgroundColor = '#e40d0d'; 
+        // button.style.borderTop = '2px solid #9e3d32';
+        // button.style.borderLeft = '2px solid #9e3d32';
+        // button.style.borderBottom = '2px solid #f5b0a6';
+        // button.style.borderRight = '2px solid #f5b0a6';  
+        // button.style.boxShadow = 'inset 4px 4px 8px rgba(0, 0, 0, 0.3)';
+        // button.style.cursor = 'pointer';
         console.log("\n\n");
+        console.log("\nGAME OVER");
         game = 0;
+        losing_cell=[raww, caww];
     }
 
     connectedZero();
@@ -314,12 +352,14 @@ function changePress(raww, caww, decision) {
 function display() {
     let numppp = 1;
     let output = "   1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30\n";
+    if (CHOSEN_DIFF_COLS === 16) {output = "   1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16\n";}
+    if (CHOSEN_DIFF_COLS === 8) {output = "   1  2  3  4  5  6  7  8\n";}
     for (let row = 0; row < CHOSEN_DIFF_ROWS; row++) {
         output += numppp + " ";
         if (numppp < 10) output += " ";
         numppp++;
         for (let col = 0; col < CHOSEN_DIFF_COLS; col++) {
-            const button = document.getElementById(`button-${row}-${col}`);
+            const button = document.getElementById(`${CHOSEN_DIFF_BOMBS}-button-${row}-${col}`);
 
             if (game === 0 && board[row][col].behind === 1)
                 board[row][col].hasbeenpressed = 1;
@@ -329,6 +369,24 @@ function display() {
                     output += "*  ";
                     button.textContent = "💣";
                     button.style.color = RED;
+
+                    if (losing_cell[0] === row && losing_cell[1] === col) {
+                        button.style.backgroundColor = '#e40d0d'; 
+                        button.style.borderTop = '2px solid #9e3d32';
+                        button.style.borderLeft = '2px solid #9e3d32';
+                        button.style.borderBottom = '2px solid #f5b0a6';
+                        button.style.borderRight = '2px solid #f5b0a6';  
+                        button.style.boxShadow = 'inset 4px 4px 8px rgba(0, 0, 0, 0.3)';
+                        button.style.cursor = 'pointer';
+                    }else{
+                        button.style.backgroundColor = '#707070';  // Darker than #a0a0a0
+                        button.style.borderTop = '2px solid #404040';  
+                        button.style.borderLeft = '2px solid #404040';  
+                        button.style.borderBottom = '2px solid #909090'; 
+                        button.style.borderRight = '2px solid #909090'; 
+                        button.style.boxShadow = 'inset 4px 4px 8px rgba(0, 0, 0, 0.4)';
+                        button.style.cursor = 'pointer';
+                    }
                 }
                 else {
                     output += board[row][col].numberofbombs + "  ";
@@ -394,6 +452,18 @@ function display() {
 
 // }
 
+function initialize(){
+    showBoard("intermediate");
+    setActiveButton("intermediate");
+    CHOSEN_DIFF_BOMBS = INTERMEDIATE_BOMBS;
+    CHOSEN_DIFF_ROWS = INTERMEDIATE_ROWS;
+    CHOSEN_DIFF_COLS = INTERMEDIATE_COLUMNS;
+    board = Array(CHOSEN_DIFF_ROWS).fill().map(() => Array(CHOSEN_DIFF_COLS).fill().map(() => new Cell()));
+    game = 1; 
+    win = 0; 
+    firstpress = true;
+}
+
 function startGame2() {
     // const DIFFICULTY = 99;
     game = 1;
@@ -405,4 +475,5 @@ function startGame2() {
     display();
 }
 
+initialize();
 startGame2();

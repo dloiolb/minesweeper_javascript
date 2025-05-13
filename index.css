@@ -72,10 +72,24 @@ html, body {
     opacity: 0.6;
 }
 
-
-#ButtonBeg {
+.button_t {
     font-family: Georgia, serif;
     padding: 5px 5px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: #b7bab7;
+    color: white;
+    border-top: 2px solid #e6ebe6;    
+    border-left: 2px solid #e6ebe6; 
+    border-bottom: 2px solid #7f7f7f;   
+    border-right: 2px solid #7f7f7f; 
+    /* border-radius: 5px; */
+    margin-bottom: 20px;
+}
+#ButtonBeg {
+    font-family: Georgia, serif;
+    /* padding: 5px 5px;
     font-size: 20px;
     cursor: pointer;
     border: none;
@@ -85,12 +99,11 @@ html, body {
     border-left: 2px solid #e6ebe6; 
     border-bottom: 2px solid #7f7f7f;   
     border-right: 2px solid #7f7f7f; 
-    /* border-radius: 5px; */
-    margin-bottom: 20px;
+    margin-bottom: 20px; */
 }
 #ButtonInt {
     font-family: Georgia, serif;
-    padding: 5px 5px;
+    /* padding: 5px 5px;
     font-size: 20px;
     cursor: pointer;
     border: none;
@@ -100,12 +113,11 @@ html, body {
     border-left: 2px solid #e6ebe6; 
     border-bottom: 2px solid #7f7f7f;   
     border-right: 2px solid #7f7f7f; 
-    /* border-radius: 5px; */
-    margin-bottom: 20px;
+    margin-bottom: 20px; */
 }
 #ButtonExp {
     font-family: Georgia, serif;
-    padding: 5px 5px;
+    /* padding: 5px 5px;
     font-size: 20px;
     cursor: pointer;
     border: none;
@@ -115,12 +127,40 @@ html, body {
     border-left: 2px solid #e6ebe6; 
     border-bottom: 2px solid #7f7f7f;   
     border-right: 2px solid #7f7f7f; 
-    /* border-radius: 5px; */
-    margin-bottom: 20px;
+    margin-bottom: 20px; */
 }
 
-/* #ButtonBeg:active, */
-/* #ButtonInt:active, */
+#ButtonBeg:active,
+.button-active-beginner {
+    background-color: #339933;
+    color: white;
+    border-top: 2px solid #1f661f;   
+    border-left: 2px solid #1f661f; 
+    border-bottom: 2px solid #66cc66;  
+    border-right: 2px solid #66cc66; 
+}
+#ButtonInt:active,
+.button-active-intermediate {
+    background-color: #ff9900;
+    color: white;
+    border-top: 2px solid #b36b00;   
+    border-left: 2px solid #b36b00; 
+    border-bottom: 2px solid #ffd699;  
+    border-right: 2px solid #ffd699;
+}
+#ButtonExp:active,
+.button-active-expert {
+    background-color: #cc0000;
+    color: white;
+    border-top: 2px solid #800000;   
+    border-left: 2px solid #800000; 
+    border-bottom: 2px solid #ff6666;  
+    border-right: 2px solid #ff6666; 
+}
+
+
+/* #ButtonBeg:active,
+#ButtonInt:active,
 #ButtonExp:active {
     background-color: #a0a0a0;
     color: white;
@@ -128,7 +168,7 @@ html, body {
     border-left: 2px solid #6b6b6b; 
     border-bottom: 2px solid #c1c1c1;  
     border-right: 2px solid #c1c1c1;   
-}
+} */
 
 button {
     /* padding: 5px 5px; */
@@ -174,7 +214,7 @@ p {
 .game-board {
     position: absolute;
     top: 0;
-    display: grid;    
+    display: none;    
 }
 
 .game-board.active {
