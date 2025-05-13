@@ -12,12 +12,17 @@ html, body {
 .container {
     /* align-self: flex-end; */
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     background-color: rgb(14, 13, 13);
 }
 
 #myButton {
     padding: 5px 5px;
     font-size: 20px;
+    width: 40px;
     font-family: Georgia, serif;
     cursor: pointer;
     border: none;
@@ -199,14 +204,14 @@ p {
 }
 
 #game-board-container {
-  position: relative;
-  display: flex;
-  width: 900px; 
-  height: 500px;
-  justify-content: center;
-  align-items: center;
+    position: relative;
+    display: flex;
+    width: 900px; 
+    height: 500px;
+    justify-content: center;
+    align-items: center;
 
-  display: grid;
+    display: flex;
   /* place-items: center; */ 
   /* background-color: white; */
 }
